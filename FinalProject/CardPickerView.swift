@@ -6,13 +6,49 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CardPickerView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @ObservedObject var cardList: CardList
+    @Environment(\.dismiss) var dismiss
+    var body: some View
+    {
+        ForEach(cardList.cards){card in
+            Button{
+                cardList.selectedCard = card
+                cardList.objectWillChange.send()
+                dismiss()
+            } label: {
+                HStack{
+                        HStack{
+                            if let url = URL(string: card.imageUris.normal), !card.imageUris.normal.isEmpty {
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(height: 100)
+                        } else {
+                            ProgressView()
+                                .frame(height: 100)
+                        }
+                        Text(card.name)
+                            .font(.headline)
+                        ForEach(card.colorIdentity, id: \.self){ ident in
+                            Text(ident)
+                        }
+                    }
+                }
+            }
+        }.navigationTitle("Pick Your Commander")
     }
 }
 
+
 #Preview {
-    CardPickerView()
+    NavigationStack{
+        CardPickerView(cardList: CardList())
+    }
 }
