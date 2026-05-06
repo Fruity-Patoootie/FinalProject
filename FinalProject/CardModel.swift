@@ -5,6 +5,7 @@
 //  Created by KIRKPATRICK, LAURA on 4/27/26.
 //
 import Combine
+import SwiftUI
 
 struct ImageUris: Decodable{
     let normal: String
@@ -49,18 +50,29 @@ class CardList: ObservableObject {
     }
 }
 
-//enum CardList {
-//    case card1, card2, card3, card4, card5
-//    
-//    var card: CardViewModel
-//    {
-//        switch self
-//        {
-//            case .card1: return CardViewModel.init()
-//            case .card2: return CardViewModel.init()
-//            case .card3: return CardViewModel.init()
-//            case .card4: return CardViewModel.init()
-//            case .card5: return CardViewModel.init()
-//        }
-//    }
-//}
+enum Dev: String, CaseIterable, Identifiable{
+    case laura, chandra, jace
+    
+    var id: String {self.rawValue}
+    
+    var description: String {
+        switch self{
+            case .laura: return "Laura has been developing apps for the past 6 months. This is her first really awesome swift app. She is very proud of the work she has done here!"
+            case .chandra: return "Chandra is a fictional character from Magic: The Gathering. She did not develop this app, but Laura thought that it would be funny to include her in the developers list"
+            case .jace: return "Jace is also a fictional character form Magic: The Gathering. Laura also thought that he would be a good candidate for this little enum."
+        }
+    }
+    
+    var image: ImageResource{
+        switch self {
+            case .laura:
+                .nicepfp
+            case .chandra:
+                .chandra
+            case .jace:
+                .jace
+        }
+    }
+    
+    
+}

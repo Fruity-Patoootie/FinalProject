@@ -9,9 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var cardList = CardList()
-    
-    
-    
     var body: some View {
         TabView{
             NavigationStack{
@@ -21,26 +18,23 @@ struct ContentView: View {
                         .font(.title)
                     if let selectedCard = cardList.selectedCard{
                         VStack{
-                            if !selectedCard.imageUris.normal.isEmpty
-                            {
-                                AsyncImage(url: URL(string: selectedCard.imageUris.normal)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(height: 300)
-                                .id(selectedCard.imageUris.normal)
-                                Text(selectedCard.name)
-                                    .font(.headline)
-                            }
-                            else {
+                            AsyncImage(url: URL(string: selectedCard.imageUris.normal)) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                            } placeholder: {
                                 ProgressView()
-                                    .frame(height: 300)
                             }
+                            .frame(height: 300)
+                            .id(selectedCard.imageUris.normal)
+                            Text(selectedCard.name)
+                                .font(.headline)
                         }
                         .id(selectedCard.id)
+                    }
+                    else {
+                        ProgressView()
+                            .frame(height: 300)
                     }
 
                     NavigationLink("Pick Another Commander!")
@@ -60,15 +54,16 @@ struct ContentView: View {
                 }
             }
                 // Here is the about developer segment. This is where we will have an enum about the developer
-//                AboutView()
-//                    .tabItem{
-//                        Label("Dev About", systemImage: "info.circle")
-//                    }
-                // Here is where the API detial page will go. We will talk about scryfall and the other requirements
-//                AboutView()
-//                    .tabItem{
-//                        Label("API About", systemImage: "sparkles")
-//                    }
+                AboutView()
+                .tabItem{
+                    Label("Dev About", systemImage: "info.circle")
+                    }
+                    // Here is where the API detial page will go. We will talk about scryfall and the other requirements
+                    ApiView()
+                .tabItem{
+                    Label("API About", systemImage: "sparkles")
+                }
+                .navigationTitle("API Info")
         }
     }
 }
